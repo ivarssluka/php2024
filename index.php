@@ -1,206 +1,332 @@
 <?php
 
-/* Arrays */
+/* Operators */
 
-$programmingLanguage1 = "PHP";
-$programmingLanguage2 = "JavaScript";
-$programmingLanguage3 = "Python";
+// Arithmetic operators ( + - * / % ** )
 
-$programmingLanguages = ['PHP', 'JavaScript', 'Python']; // Brackets are modern and easier to read syntax
-$programmingLanguages = array('PHP', 'JavaScript', 'Python'); // you can use single quotes or double quotes
+$x = 10;
+$y = 2;
 
-// Arrays are indexed starting from 0
-echo $programmingLanguages[0]; // PHP
+var_dump($x + $y); // Add operator
 echo '<br>';
-$name = 'John';
-echo $name[0]; // J
+var_dump($x - $y); // Subtract operator
 echo '<br>';
-echo $name[-1]; // n
+var_dump($x * $y); // Multiply operator
 echo '<br>';
-
-echo $programmingLanguages[-1]; // You cannot do this with arrays
+var_dump($x / $y); // Divide operator
 echo '<br>';
-
-$programmingLanguages[3] = 'Java'; // You can add new elements
-var_dump($programmingLanguages);
+var_dump($x % $y); // Modulo operator returns the remainder of the division
+echo '<br>';
+var_dump($x ** $y); // Exponent operator
 echo '<br>';
 
-var_dump(isset($programmingLanguages[3])); // You can check if an element exists
+$x = 10;
+$y = -2;
+
+var_dump($x + $y);
+echo '<br>';
+var_dump($x - $y);
+echo '<br>';
+var_dump($x * $y);
+echo '<br>';
+var_dump($x / $y);
+echo '<br>';
+var_dump($x % $y);
+echo '<br>';
+var_dump($x ** $y);
 echo '<br>';
 
-var_dump(empty($programmingLanguages[3])); // You can check if an element is empty
+$x = '10';
+$y = 2;
+
+var_dump($x); // Outputs string 10
+echo '<br>';
+var_dump(+$x); // Converts string 10 to int 10
+echo '<br>';
+var_dump(-$x); // Converts string 10 to int -10
 echo '<br>';
 
-echo count($programmingLanguages); // You can count the number of elements
+$x = +'10';
+var_dump($x); // Outputs int 10
 echo '<br>';
 
-$programmingLanguages[2] = 'Ruby'; // You can change an elements in an array
-echo $programmingLanguages[2]; // Ruby
+$x = 10;
+$y = 2;
+
+var_dump($x / $y); // Outputs int 5.0
+echo '<br>';
+$y = 3;
+var_dump($x / $y); // Outputs float 3.333333
+echo '<br>';
+$y = 2.0;
+var_dump($x / $y); // Outputs float 5
 echo '<br>';
 
-print_r($programmingLanguages); // You can print the array
+$y = 0;
+//var_dump($x / $y); // Outputs error dividing by zero
+//echo '<br>';
+var_dump(fdiv($x, $y)); // Outputs float INF
 echo '<br>';
 
-echo '<pre>';
-print_r($programmingLanguages);
-echo '</pre>'; // You can print the array in a readable format by surround it with <pre></pre> tags
+$y = 3;
+var_dump($x % $y); // Casts an int 1
 echo '<br>';
 
-$programmingLanguages[] = 'C#'; // You can add an element at the end of the array
-echo '<pre>';
-print_r($programmingLanguages);
-echo '</pre>';
+$x = 10.5;
+$y = 2.5;
+var_dump($x % $y); // Outputs int 0 as this is depracated Implicit conversion form
 echo '<br>';
 
-array_push($programmingLanguages, 'C', 'GO', 'Kotlin'); // You can push elements at the end of the array
-echo '<pre>';
-print_r($programmingLanguages);
-echo '</pre>';
+var_dump(fmod($x, $y)); // Using fmod() function will return proper result
+echo '<br>';
+$x = 10;
+$y = -3;
+var_dump($x % $y); // Outputs int 1 as it takes the sign of the first number
 echo '<br>';
 
-// Associative arrays
-$programmingLanguage = [
-    'php' => 8.0,
-    'python' => 3.8,
-    'javascript' => 6.0
-];
-echo '<pre>';
-print_r($programmingLanguage);
-echo '</pre>';
+$x = -10;
+$y = 3;
+var_dump($x % $y); // Outputs int -1 as it takes the sign of the first number
 echo '<br>';
 
-$programmingLanguage['go'] = 1.18; // You can add an element at the end of the array
-echo '<pre>';
-print_r($programmingLanguage);
-echo '</pre>';
+// Assignment operators ( = += -= *= /= %= **= )
+
+$x = 10; // Assigns value of 10 to $x
+var_dump($x);
+echo '<br>';
+$x = $y = 10; // Assigns value of 10 to $x and $y
+var_dump($x, $y);
+echo '<br>';
+$x = ($y = 10) + 5; // Assigns value of 15 to $x and value of 10 to $y
+var_dump($x, $y);
 echo '<br>';
 
-$newLanguage = 'go';
-$programmingLanguage[$newLanguage] = 1.18; // Alternative way of adding an element
-echo '<pre>';
-print_r($programmingLanguage);
-echo '</pre>';
+$x = 10;
+var_dump($x);
+echo '<br>';
+$x = $x + 5; // Assigns value of 15 to $x
+var_dump($x);
+echo '<br>';
+$x += 5; // Assigns value of 20 to $x by adding 5
+var_dump($x);
 echo '<br>';
 
-// Multidimensional arrays
-
-$languages = [
-    'php' => [
-        'creator' => 'Rasmus Lerdorf',
-        'extension' => 'php',
-        'website' => 'https://www.php.net/',
-        'isOpenSource' => true,
-        'versions' => [
-            ['version' => 7.4, 'released' => '2021-11-01'],
-            ['version' => 8, 'released' => '2020-11-01']
-        ],
-    ],
-    'python' => [
-        'creator' => 'Guido van Rossum',
-        'extension' => 'py',
-        'website' => 'https://www.python.org/',
-        'isOpenSource' => true,
-        'versions' => [
-            ['version' => 3.8, 'released' => '2021-11-01'],
-            ['version' => 3.9, 'released' => '2020-11-01']
-        ],
-    ],
-];
-
-echo '<pre>';
-print_r($languages);
-echo '</pre>';
+$xx += 5;
+var_dump($xx); // $xx is not defined and you see an error, but the value is still 5;
 echo '<br>';
 
-echo $languages['php']['versions'][0]['version']; // PHP assigns numeric values by default so this will be 7.4
+// String operators ( . .= )
+
+$x = 'Hello';
+var_dump($x . ' World');
 echo '<br>';
-echo $languages['php']['versions'][1]['released']; // PHP assigns numeric values by default so this will be 2020-11-01
-echo '<br>';
-echo $languages['php']['versions'][3]['version']; // This will result in error as there is no value at index 3
+$x .= ' World'; // Assigns value of 'Hello World' to $x
+var_dump($x);
 echo '<br>';
 
-$array = [0 => 'foo', 1 => 'bar', 1 => 'baz']; // You can overwrite values
-print_r($array);
-echo '<br>';
-
-$array = [true => 'a', 1 => 'b', 1 => 'c', 1.8 => 'd']; // You will get a warning, but the value will be 'd'.
-print_r($array);
-echo '<br>';
-
-$array = [true => 'a', 1 => 'b', 1 => 'c', 1.8 => 'd', null => 'e']; // null as key is cast to and empty string
-print_r($array);
-echo '<br>';
-echo $array[''] . '<br>';
-echo $array[null] . '<br>';
-echo '<br>';
-
-$array = ['a', 'b', 'c', 'd', 'e']; // Again automatically converts to 0, 1, 2, 3, 4
-print_r($array);
-echo '<br>';
-echo $array[0] . '<br>';
-echo $array[1] . '<br>';
-echo $array[2] . '<br>';
-echo $array[3] . '<br>';
-echo $array[4] . '<br>';
-echo '<br>';
-
-$array = ['a', 'b', 50 => 'c', 'd', 'e'];
-print_r($array);
-echo '<br>';
-echo $array[0] . '<br>';
-echo $array[1] . '<br>';
-echo $array[2] . '<br>'; // this will be undefined
-echo $array[50] . '<br>';
-echo $array[51] . '<br>';
-echo $array[52] . '<br>';
-echo '<br>';
-
-// Removing elements from an array
-
-echo array_pop($array) . '<br>'; // Removes the last element
-print_r($array);
-echo '<br>';
-
-echo array_shift($array) . '<br>'; // Removes the first element and reindexes the array
-print_r($array);
-echo '<br>';
-
-$array = ['a', 'b', 50 => 'c', 'foo' => 'd', 'e'];
-echo array_shift($array) . '<br>'; // non-numeric keys are not reindexed
-print_r($array);
-echo '<br>';
-
-$array = ['a', 'b', 'c', 'd', 'e'];
-unset($array[2]); // Removes the element at index 2 without reindexing
-print_r($array);
-echo '<br>';
-
-$array = ['a', 'b', 'c', 'd', 'e'];
-unset($array[0], $array[2]); // Removes the elements at index 0 and 2 without reindexing
-print_r($array);
-echo '<br>';
-
-$array = [1, 2, 3, 4, 5];
-unset($array[0], $array[1], $array[2], $array[3], $array[4]); // unset all elements but remains the highest index
-$array[] = 1; // So this becomes element with index 5
-print_r($array);
-echo '<br>';
-
+// Comparison operators ( == === !== != <> < > <= >= <=> ?? ?: )
 
 $x = 5;
-var_dump((array) $x); // $x is cast to an array
+$y = 3;
+
+var_dump($x == $y); // Outputs bool false
+echo '<br>';
+var_dump($x != $y); // Outputs bool true
+echo '<br>';
+var_dump($x === $y); // Outputs bool false strict output checks the data type as well as the value
+echo '<br>';
+var_dump($x !== $y); // Outputs bool true
 echo '<br>';
 
-$x = 'foo';
-var_dump((array) $x); // $x is cast to an array
+$x = 5;
+$y = '5';
+
+var_dump($x == $y); // Outputs bool true
 echo '<br>';
+var_dump($x != $y); // Outputs bool false
+echo '<br>';
+var_dump($x === $y); // Outputs bool false strict output checks the data type as well as the value
+echo '<br>';
+var_dump($x !== $y); // Outputs bool true
+echo '<br>';
+var_dump($x <> $y); // Outputs bool false pretty much same as loose inequality operator
+echo '<br>';
+
+$x = 10;
+$y = 5;
+var_dump($x <=> $y); // Outputs int 1
+echo '<br>';
+$y = 10;
+var_dump($x <=> $y); // Outputs int 0
+echo '<br>';
+$x = 5;
+var_dump($x <=> $y); // Outputs int -1
+echo '<br>';
+
+var_dump(0 == 'hello'); // Outputs bool false // php7.4 will say true
+echo '<br>';
+
+$x = 'Hello World';
+$y = strpos($x, 'H');
+if ($y == false) { // Loose comparison will agree that index 0 is false and return H is not found
+    echo 'H Not found';
+} else {
+    echo 'H found at index' . $y . '<br>';
+}
+echo '<br>';
+if ($y === false) { // Strict comparison will not agree that index 0 is false and return the index of H
+    echo 'H Not found';
+} else {
+    echo 'H found at index' . $y . '<br>';
+}
+
+// Conditional operators ( ? : ) ternary operator expects three values
+
+$x = 'Hello World';
+$y = strpos($x, 'H');
+$result = $y === false ? 'H Not found' : 'H found at index' . $y;
+echo $result . '<br>';
 
 $x = null;
-var_dump((array) $x); // $x is cast to an empty array
+$y = $x ?? 'Hello World'; // Null coalescing operator will return 'Hello World' if $x is null
+echo $y . '<br>';
+
+$x = false;
+$y = $x ?? 'Hello World'; // Null coalescing operator will return false because $x is false
+var_dump($y);
 echo '<br>';
 
-$array = ['a' => 1, 'b' => null];
-var_dump(array_key_exists('a', $array)); // True
+$y = $xxx ?? 'Hello World'; // Null coalescing operator will return 'Hello World' because $xxx is not defined
+var_dump($y);
 echo '<br>';
-var_dump(isset($array['b'])); // False because of the null
+
+// Error control operators ( @ )
+
+$x = file('foo.txt'); // Prints an error if file does not exist
+var_dump($x);
 echo '<br>';
+
+$x = @file('foo.txt'); // Doesn't print error if file does not exist
+var_dump($x); // Outputs false. This operator is not suggested unless you have a good reason to use it
+echo '<br>';
+
+// Increment/Decrement operators ( ++ -- )
+
+$x = 10;
+$x ++ ; // Outputs 11
+var_dump($x);
+echo '<br>';
+$x -- ; // Outputs 10
+var_dump($x);
+echo '<br>';
+++ $x ; // Outputs 11
+var_dump($x);
+echo '<br>';
+-- $x ; // Outputs 10
+var_dump($x);
+echo '<br>';
+echo $x ++ . '<br>'; // Outputs 10
+echo $x . '<br>'; // Outputs 11
+echo ++$x . '<br>'; // Outputs 12
+echo $x . '<br>'; // Outputs 12
+
+$x = null;
+echo ++$x . '<br>'; // Outputs 1
+$x = null;
+echo --$x . '<br>'; // has no effect on null
+
+
+// Logical operators ( && || ! and or xor )
+
+$x = true;
+$y = false;
+var_dump($x && $y); // Outputs bool false
+echo '<br>';
+var_dump($x or $y); // Outputs bool true
+echo '<br>';
+var_dump(!$x); // Outputs bool false
+echo '<br>';
+var_dump($x xor $y); // Outputs bool true
+echo '<br>';
+
+$x = true;
+$y = false;
+$z = $x && $y;
+var_dump($z); // Outputs bool false
+echo '<br>';
+
+$z = $x and $y;
+var_dump($z); // Outputs bool true, because assignment operator gets evaluated first
+echo '<br>';
+
+$x = false;
+$y = false;
+function hello()
+{
+    echo 'Hello World';
+    return false;
+}
+
+var_dump($x && hello() || true ); // Outputs bool true because or operator needs to check both sides
+echo '<br>';
+
+// Bitwise operators ( & | ^ ~ << >> )
+
+$x = 6;
+$y = 3;
+var_dump($x & $y); // Outputs int 2 because 6 is binary 110 and 3 is binary 011 which is binary 010, which is 2 in decimal
+echo '<br>';
+
+var_dump($x | $y); // Outputs int 7 because 6 is binary 110 and 3 is binary 011 which is binary 111, which is 7 in decimal
+echo '<br>';
+
+var_dump($x ^ $y); // Outputs int 5 because 6 is binary 110 and 3 is binary 011 which is binary 101, which is 5 in decimal
+echo '<br>';
+
+var_dump(~$x & $y); // Outputs 1
+echo '<br>';
+
+var_dump($x << $y); // Outputs 48 // 110 << becomes 110000 = 16 + 32 = 48
+echo '<br>';
+
+// Array operators ( + == === != !== <> )
+
+$x = ['a', 'b', 'c'];
+$y = ['d', 'e', 'f'];
+
+$z = $x + $y;
+var_dump($z); // Outputs array(3) { [0]=> string(1) "a" [1]=> string(1) "b" [2]=> string(1) "c" }
+echo '<br>';
+
+$y = ['d', 'e', 'f', 'g'];
+$z = $x + $y;
+var_dump($z); // Outputs array(4) { [0]=> string(1) "a" [1]=> string(1) "b" [2]=> string(1) "c" [3]=> string(1) "g" }
+echo '<br>';
+
+$x = ['a' => 1, 'b' => 2, 'c' => 3];
+$y = ['d' => 4, 'e' => 5, 'f' => 6];
+var_dump($x + $y); // Outputs combined array
+echo '<br>';
+
+$z = $x == $y;
+var_dump($z); // Outputs bool false
+echo '<br>';
+
+$y = ['a' => 1, 'b' => '2', 'c' => 3];
+$z = $x == $y;
+var_dump($z); // Outputs bool true
+echo '<br>';
+
+$y = ['a' => 1, 'c' => 3, 'b' => '2'];
+$z = $x === $y;
+var_dump($z); // Outputs bool false because order is not the same even if values are the same
+echo '<br>';
+
+
+// Last three operators will get covered later in course when we start learning about objects.
+
+// Execution operators ( `` )
+
+// Type operators ( instanceof )
+
+// Nullsafe operator - PHP8 (?)
