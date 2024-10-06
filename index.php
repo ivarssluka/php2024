@@ -1,81 +1,62 @@
 <?php
 
-/* Match expression */
+/* Return / Declare / goto */
+declare (strict_types = 1);
 
-$paymentStatus = 1;
+function sum(int $x, int $y): int
+{
+    $z = $x + $y;
+    return $z; // it will stop execution of function and return given argument
+}
+$x = sum(5, 10); // return statement in function does not stop execution of the script
+echo $x;
+echo '<br>';
+echo 'Hello, World!' . '<br>';
 
-switch ($paymentStatus) {
-    case 1:
-        echo "Payment is approved <br>";
-        break;
-    case 2:
-        echo "Payment is pending <br>";
-        break;
-    case 3:
-        echo "Payment is declined <br>";
-        break;
-    default:
-        echo "Payment status unknown <br>";
-        break;
+
+$x = sum(5, 10); // return statement in function does not stop execution of the script
+echo $x;
+//return; // if we use return globally it will stop execution of the script and following code will not be executed
+echo '<br>';
+echo 'Hello, World!' . '<br>';
+
+// declare - ticks
+$x = 3;
+$y = 5;
+$z = $x + $y;
+// each of these expressions cause a tick
+// you can call function on ticks
+
+function onTick()
+{
+    echo "Tick <br>";
+}
+register_tick_function('onTick');
+declare(ticks = 1); // Specify how many ticks should be executed
+
+$i = 0;
+$length = 10;
+while ($i < $length) {
+    echo $i++ . '<br>';
 }
 
-match ($paymentStatus) {
-    1 => print "Payment is approved <br>",
-    2 => print "Payment is pending <br>",
-    3 => print "Payment is declined <br>",
-    default => print "Payment status unknown <br>"
-};
+declare(ticks = 3); // Specify how many ticks should be executed
 
-$paymentStatusDisplay = match ($paymentStatus) {
-    1 => print "Payment is approved <br>",
-    2 => print "Payment is pending <br>",
-    3 => print "Payment is declined <br>",
-    default => print "Payment status unknown <br>"
-};
-echo $paymentStatusDisplay . "<br>"; // Prints 1 because of print statement
+$i = 0;
+$length = 10;
+while ($i < $length) {
+    echo $i++ . '<br>';
+}
+// declare - encoding
 
-// You don't need a break statement using the match expression
+// declare - strict_types - we declare strict types at the beginning of script
 
+function add(int $x, int $y): int
+{
+    return $x + $y;
+}
 
-$paymentStatusDisplay = match ($paymentStatus) {
-    1 => "Payment is approved <br>",
-    2 => "Payment is pending <br>",
-    3 => "Payment is declined <br>",
-    0 => "Payment status unknown <br>"
-};
-echo $paymentStatusDisplay . "<br>"; // Prints the assigned string value;
+echo add(5, 10); // everything works as expected
 
-
-$paymentStatusDisplay = match ($paymentStatus) {
-    1 => "Payment is approved <br>",
-    2,3 => "Payment is pending <br>", // You can use multiple values in the match expression
-    0 => "Payment status unknown <br>"
-};
-echo $paymentStatusDisplay . "<br>"; // Prints the assigned string value;
-
-$paymentStatus = 4;
-/*
-    $paymentStatusDisplay = match ($paymentStatus) {
-    1 => "Payment is approved <br>",
-    2,3 => "Payment is pending <br>",
-    0 => "Payment status unknown <br>"
-};
-echo $paymentStatusDisplay . "<br>"; // This will result in fatal error, because you need to specify all outcomes for the match expression*/
-
-$paymentStatusDisplay = match ($paymentStatus) {
-    1 => "Payment is approved <br>",
-    2,3 => "Payment is pending <br>",
-    0 => "Payment status unknown <br>",
-    default => "Payment status unknown <br>" // Adding default will fix the fatal error
-};
-echo $paymentStatusDisplay . "<br>";
-
-$paymentStatus = '1';
-
-$paymentStatusDisplay = match ($paymentStatus) { // Match uses strict type comparison that's why this will result in default value
-    1 => "Payment is approved <br>",
-    2,3 => "Payment is pending <br>",
-    0 => "Payment status unknown <br>",
-    default => "Payment status unknown <br>"
-};
-echo $paymentStatusDisplay . "<br>";
+echo add(5, '10'); // fatal error, strict types are not met
+// If you want to use strict types in the file where the function gets called from, you will need to include file with declaration.
