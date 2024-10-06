@@ -1,120 +1,81 @@
 <?php
 
-/* Switch statement */
+/* Match expression */
 
-$paymentStatus = "paid";
-
-switch ($paymentStatus) {
-    case "paid":
-        echo "Payment is successful <br>";
-        break;
-    case "pending": // this will not be executed as paid is matched at this point
-        echo "Payment is pending <br>";
-        break;
-    default:
-        echo "Payment is failed <br>";
-}
+$paymentStatus = 1;
 
 switch ($paymentStatus) {
-    case "paid":
-        echo "Payment is successful <br>";
-//        break; // if you remove this line, it will execute the next cases as well
-    case "pending":
+    case 1:
+        echo "Payment is approved <br>";
+        break;
+    case 2:
         echo "Payment is pending <br>";
         break;
+    case 3:
+        echo "Payment is declined <br>";
+        break;
     default:
-        echo "Payment is failed <br>";
+        echo "Payment status unknown <br>";
+        break;
 }
+
+match ($paymentStatus) {
+    1 => print "Payment is approved <br>",
+    2 => print "Payment is pending <br>",
+    3 => print "Payment is declined <br>",
+    default => print "Payment status unknown <br>"
+};
+
+$paymentStatusDisplay = match ($paymentStatus) {
+    1 => print "Payment is approved <br>",
+    2 => print "Payment is pending <br>",
+    3 => print "Payment is declined <br>",
+    default => print "Payment status unknown <br>"
+};
+echo $paymentStatusDisplay . "<br>"; // Prints 1 because of print statement
+
+// You don't need a break statement using the match expression
+
+
+$paymentStatusDisplay = match ($paymentStatus) {
+    1 => "Payment is approved <br>",
+    2 => "Payment is pending <br>",
+    3 => "Payment is declined <br>",
+    0 => "Payment status unknown <br>"
+};
+echo $paymentStatusDisplay . "<br>"; // Prints the assigned string value;
+
+
+$paymentStatusDisplay = match ($paymentStatus) {
+    1 => "Payment is approved <br>",
+    2,3 => "Payment is pending <br>", // You can use multiple values in the match expression
+    0 => "Payment status unknown <br>"
+};
+echo $paymentStatusDisplay . "<br>"; // Prints the assigned string value;
+
+$paymentStatus = 4;
+/*
+    $paymentStatusDisplay = match ($paymentStatus) {
+    1 => "Payment is approved <br>",
+    2,3 => "Payment is pending <br>",
+    0 => "Payment status unknown <br>"
+};
+echo $paymentStatusDisplay . "<br>"; // This will result in fatal error, because you need to specify all outcomes for the match expression*/
+
+$paymentStatusDisplay = match ($paymentStatus) {
+    1 => "Payment is approved <br>",
+    2,3 => "Payment is pending <br>",
+    0 => "Payment status unknown <br>",
+    default => "Payment status unknown <br>" // Adding default will fix the fatal error
+};
+echo $paymentStatusDisplay . "<br>";
 
 $paymentStatus = '1';
 
-switch ($paymentStatus) {
-    case 1:
-        echo "Payment is successful <br>"; // this will be executed because switch uses loose comparison
-        break;
-    case 2:
-        echo "Payment is pending <br>";
-        break;
-    default:
-        echo "Payment is failed <br>";
-}
-
-$paymentStatuses = [1, 2, 3];
-foreach ($paymentStatuses as $paymentStatus) {
-    switch ($paymentStatus) {
-        case 1:
-            echo "Payment is successful <br>";
-            break;
-        case 2:
-            echo "Payment is pending <br>";
-            break;
-        case 3:
-            echo "Payment has failed <br>";
-            break;
-        default:
-            echo "Payment status - unknown <br>"; // in this case all cases will be executed except default
-    }
-}
-
-
-$paymentStatuses = [1, 2, 3];
-foreach ($paymentStatuses as $paymentStatus) {
-    switch ($paymentStatus) {
-        case 1:
-            echo "Payment is successful <br>";
-            break 2; // if you want to break out of the loop you need to specify the break levels here
-        case 2:
-            echo "Payment is pending <br>";
-            break;
-        case 3:
-            echo "Payment has failed <br>";
-            break;
-        default:
-            echo "Payment status - unknown <br>"; // in this case all cases will be executed except default
-    }
-}
-
-function x() {
-    sleep(3);
-    echo "Done <br>";
-    return 3;
-}
-
-//if (x() === 1) {
-//    echo 1;
-//} elseif (x() === 2) {
-//    echo 2;
-//} elseif (x() === 3) {
-//    echo 3;
-//} else {
-//    echo 4;
-//}
-
-// this will take you 9 seconds to execute the function
-
-$x = x(); // however this will only run once and take only 3 seconds to execute
-if ($x === 1) {
-    echo 1;
-} elseif ($x === 2) {
-    echo 2;
-} elseif ($x === 3) {
-    echo 3;
-} else {
-    echo 4;
-}
-
-// We can achieve similar results using switch case
-
-switch (x()) {
-    case 1:
-        echo 1;
-        break;
-    case 2:
-        echo 2;
-        break;
-    case 3:
-        echo 3;
-        break;
-    default:
-        echo 4;
-}
+$paymentStatusDisplay = match ($paymentStatus) { // Match uses strict type comparison that's why this will result in default value
+    1 => "Payment is approved <br>",
+    2,3 => "Payment is pending <br>",
+    0 => "Payment status unknown <br>",
+    default => "Payment status unknown <br>"
+};
+echo $paymentStatusDisplay . "<br>";
