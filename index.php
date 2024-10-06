@@ -1,62 +1,35 @@
 <?php
 
-/* Return / Declare / goto */
-declare (strict_types = 1);
+/** require / require_once / include / include_once */
+//
+//include 'file.php'; // include will result in warning but will not stop code execution
+//include 'file.php'; // this will run as many times as it is included
+//echo 'Hello, World! <br>' ;
+//
+//
+//require 'file.php'; // require will result in fatal error and stop execution
+//echo 'Hello, World! <br>' ;
 
-function sum(int $x, int $y): int
-{
-    $z = $x + $y;
-    return $z; // it will stop execution of function and return given argument
-}
-$x = sum(5, 10); // return statement in function does not stop execution of the script
-echo $x;
-echo '<br>';
-echo 'Hello, World!' . '<br>';
+//require_once 'file.php';
+//$x++;
+//echo $x . '<br>'; // prints x as 6
+//
+//require_once 'file.php'; // this will only run once, that is the main difference
+//echo $x . '<br>'; // prints x as 6
+//echo 'Hello, World! <br>' ;
 
+//require 'file.php';
+//$x++;
+//echo $x . '<br>'; // prints x as 6
+//
+//require 'file.php';
+//echo $x . '<br>'; // prints x as 5 because we require it again with default value
+// That's why you want to use require_once to avoid variable declaration errors or overriding values.
 
-$x = sum(5, 10); // return statement in function does not stop execution of the script
-echo $x;
-//return; // if we use return globally it will stop execution of the script and following code will not be executed
-echo '<br>';
-echo 'Hello, World!' . '<br>';
+ob_start();
+include './partials/nav.php';
+$nav = ob_get_clean();
 
-// declare - ticks
-$x = 3;
-$y = 5;
-$z = $x + $y;
-// each of these expressions cause a tick
-// you can call function on ticks
+$nav = str_replace('About', 'About Us', $nav); // replaces About with About Us
 
-function onTick()
-{
-    echo "Tick <br>";
-}
-register_tick_function('onTick');
-declare(ticks = 1); // Specify how many ticks should be executed
-
-$i = 0;
-$length = 10;
-while ($i < $length) {
-    echo $i++ . '<br>';
-}
-
-declare(ticks = 3); // Specify how many ticks should be executed
-
-$i = 0;
-$length = 10;
-while ($i < $length) {
-    echo $i++ . '<br>';
-}
-// declare - encoding
-
-// declare - strict_types - we declare strict types at the beginning of script
-
-function add(int $x, int $y): int
-{
-    return $x + $y;
-}
-
-echo add(5, 10); // everything works as expected
-
-echo add(5, '10'); // fatal error, strict types are not met
-// If you want to use strict types in the file where the function gets called from, you will need to include file with declaration.
+echo $nav;
