@@ -1,83 +1,76 @@
 <?php
 
-/* Floating point numbers */
+/* Strings */
 
-$x = 13.5; // Floating point
-echo $x;
-echo "<br>";
-$x = 13.5e3;
-var_dump($x); // 13500 floating point in exponential form
-echo "<br>";
-$x = 13.5e-3;
-var_dump($x); // 0.0135 floating point in exponential form
-echo "<br>";
-$x = 13.5e+3;
-var_dump($x); // 13500 floating point in exponential form
-echo "<br>";
-$x = 13_000.5e3;
-var_dump($x); // 13000500 floating point in exponential form
-echo "<br>";
-$x = 13_000.5;
-var_dump($x); // 130000.5 floating point in exponential form
-echo "<br>";
+$firstName = 'John'; // You cannot use variables in single quotes
+$lastName = 'Doe';
+$fullName = "$firstName Doe"; // You can use variables in double quotes
+echo $firstName . '<br>';
+echo $fullName . '<br>';
+$fullName = "{$firstName} Doe"; // You can use variables in double quotes
+echo $fullName . '<br>';
+//$fullName = "${firstName} Doe"; // This is Deprecated
+//echo $fullName . '<br>';
 
-// Predefined constants
-echo PHP_FLOAT_MAX;
-echo "<br>";
-echo PHP_FLOAT_MIN;
-echo "<br>";
-echo PHP_FLOAT_DIG;
-echo "<br>";
-echo PHP_FLOAT_EPSILON;
-echo "<br>";
+$fullName = "$firstName $lastName"; // You can use variables in double quotes
+echo $fullName . '<br>';
+$fullName = $firstName . ' ' . $lastName; // String concatenation
+echo $fullName . '<br>';
 
-$x = floor((0.1 + 0.7) * 10);
-var_dump($x); // Prints 7 because of decimal point imprecision as the result of the equation equals to 0.79999999999999991118
-echo "<br>";
-$x = ceil((0.1 + 0.7) * 10);
-var_dump($x); // Prints 8, which is expected
-echo "<br>";
-$x = round((0.1 + 0.7) * 10);
-var_dump($x); // Prints 8
-echo "<br>";
-$x = ceil((0.1 + 0.2) * 10);
-var_dump($x); // Prints 4 because 0.1 + 0.2 = 0.30000000000000004444 Never you should rely on floating numbers
-echo "<br>";
+echo $fullName[0] . '<br>'; // Get the first character
+echo $fullName[-2] . '<br>'; // Get the second character from the end
+echo strlen($fullName) . '<br>'; // Get the length of the string
+$fullName[1] = 'I'; // Change the second character
+echo $fullName . '<br>';
+var_dump($fullName);
+echo '<br>';
 
-$x = 0.23; // 0.23
-$y = 1 - 0.77; // 0.22999999999999998
-var_dump($x, $y);
-echo "<br>";
+$fullName[20] = 'X'; // Add an extra character
+var_dump($fullName); // This will add an extra character to the string an fill the rest with spaces
+echo '<br>';
 
-echo log(-1); // NAN (Not a Number)
-echo "<br>";
-echo log(0); // -INF
-echo "<br>";
-echo log(1); // 0
-echo "<br>";
-echo INF; // You get this when you go out of bounds of float
-echo "<br>";
-echo PHP_FLOAT_MAX * 2; // INF
-echo "<br>";
-$x = PHP_FLOAT_MAX * 2;
-var_dump(is_infinite($x)); // True
-var_dump(is_finite($x)); // The opposite
-var_dump(is_nan($x)); // False
-echo "<br>";
-var_dump(is_nan(log(-1))); // True
-echo "<br>";
-$x = 5;
-var_dump($x); // Returns int 5
-echo "<br>";
-var_dump((float)$x); // Returns float 5.0
-echo "<br>";
-var_dump(floatval($x)); // Returns float 5.0
-echo "<br>";
-var_dump((int)(float)$x); // Returns int 5
-echo "<br>";
-$x = "5.5ee";
-var_dump((float) $x); // Returns float 5.5
-echo "<br>";
-$x = "adfjdf";
-var_dump((float) $x); // Returns float 0
-echo "<br>";
+// Heredoc treats the text as if it were in double quotes
+
+$x = 10;
+$y = 20;
+$text = <<<TEXT
+Line 1 $x
+Line two $y
+Line three ' " 
+TEXT;
+echo $text; // Output: Line 1 Line two Line three
+echo '<br>';
+echo nl2br($text); // Output: Line 1<br />Line two<br />Line three
+
+// Nowdoc treats the text as if it were in single quotes
+$text = <<<'TEXT'
+Line 1 $x
+Line two $y
+Line three ' "
+TEXT;
+// Only difference is that you enclose the text in single quotes
+echo $text; // Output: Line 1 $x Line two $y Line three
+echo '<br>';
+echo nl2br($text); // Output: Line 1<br />Line two $y <br />Line three // Variable values will not be displayed.
+// Also, you don't need escape symbols with this syntax
+
+$text = <<<TEXT
+<div>
+<p>Hello</p>
+<p>World</p>
+</div>
+TEXT;
+echo $text; // You can have full html tags here.
+echo '<br>';
+
+$text = <<<TEXT
+Hello World
+TEXT;
+var_dump($text); // Output: string(11) "Hello World"
+echo '<br>';
+
+$text = <<<TEXT
+    Hello World
+TEXT;
+var_dump($text); // Output: string(15) "Hello World". It counts the spaces as well.
+echo '<br>';
