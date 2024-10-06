@@ -1,64 +1,83 @@
 <?php
 
-/* Integers */
+/* Floating point numbers */
 
-// Integers are numbers without decimal point
-
-echo PHP_INT_MAX . "<br>"; // You can check the maximum value of an integer
-echo PHP_INT_MIN . "<br>"; // You can check the minimum value of an integer
-echo PHP_INT_SIZE . "<br>"; // You can check the size of an integer
-
-$x = 10;
-echo $x . "<br>"; // Base 10
-$y = 0x2A;
-echo $y . "<br>"; // Hexadecimal base
-$z = 012;
-echo $z . "<br>"; // Octal base
-$w = 0b1010;
-echo $w . "<br>"; // Binary base
-
-$max = PHP_INT_MAX;
-var_dump($max);
-echo "<br>"; // Maximum value of an integer
-var_dump($max + 1);
-echo "<br>"; // This will change the number to float.
-
-$min = PHP_INT_MIN;
-var_dump($min); // Minimum value of an integer
+$x = 13.5; // Floating point
+echo $x;
 echo "<br>";
-var_dump($min - 1); // This will change the number to float.
+$x = 13.5e3;
+var_dump($x); // 13500 floating point in exponential form
+echo "<br>";
+$x = 13.5e-3;
+var_dump($x); // 0.0135 floating point in exponential form
+echo "<br>";
+$x = 13.5e+3;
+var_dump($x); // 13500 floating point in exponential form
+echo "<br>";
+$x = 13_000.5e3;
+var_dump($x); // 13000500 floating point in exponential form
+echo "<br>";
+$x = 13_000.5;
+var_dump($x); // 130000.5 floating point in exponential form
 echo "<br>";
 
-$num = (int) true;
-var_dump($num); // 1
+// Predefined constants
+echo PHP_FLOAT_MAX;
 echo "<br>";
-$num = (integer) false;
-var_dump($num); // 0
+echo PHP_FLOAT_MIN;
 echo "<br>";
-$num = (int) "10";
-var_dump($num); // 10
+echo PHP_FLOAT_DIG;
 echo "<br>";
-$num = (int) "10.5 and some string";
-var_dump($num); // Prints 10 ignoring the string
-echo "<br>";
-$num = (int) "10.9"; // Rounds number down
-var_dump($num); // 10
-echo "<br>";
-var_dump(is_int($num)); // Checks if number is an integer and returns true
-echo "<br>";
-$num = null;
-var_dump(is_int($num)); // Checks if number is an integer and returns false
-echo "<br>";
-$num = (int) null;
-var_dump(is_int($num)); // Checks if number is an integer and returns true, because of type casting.
+echo PHP_FLOAT_EPSILON;
 echo "<br>";
 
-$num = 10_000_000;
-var_dump($num); // Prints the number ignoring underscores
+$x = floor((0.1 + 0.7) * 10);
+var_dump($x); // Prints 7 because of decimal point imprecision as the result of the equation equals to 0.79999999999999991118
 echo "<br>";
-$num = '10_000_000';
-var_dump($num); // Prints the number with underscores as it is a string.
+$x = ceil((0.1 + 0.7) * 10);
+var_dump($x); // Prints 8, which is expected
 echo "<br>";
-$num = (int) '10_000_000';
-var_dump($num); // Prints int(10) and ignores everything after 10;
+$x = round((0.1 + 0.7) * 10);
+var_dump($x); // Prints 8
+echo "<br>";
+$x = ceil((0.1 + 0.2) * 10);
+var_dump($x); // Prints 4 because 0.1 + 0.2 = 0.30000000000000004444 Never you should rely on floating numbers
+echo "<br>";
+
+$x = 0.23; // 0.23
+$y = 1 - 0.77; // 0.22999999999999998
+var_dump($x, $y);
+echo "<br>";
+
+echo log(-1); // NAN (Not a Number)
+echo "<br>";
+echo log(0); // -INF
+echo "<br>";
+echo log(1); // 0
+echo "<br>";
+echo INF; // You get this when you go out of bounds of float
+echo "<br>";
+echo PHP_FLOAT_MAX * 2; // INF
+echo "<br>";
+$x = PHP_FLOAT_MAX * 2;
+var_dump(is_infinite($x)); // True
+var_dump(is_finite($x)); // The opposite
+var_dump(is_nan($x)); // False
+echo "<br>";
+var_dump(is_nan(log(-1))); // True
+echo "<br>";
+$x = 5;
+var_dump($x); // Returns int 5
+echo "<br>";
+var_dump((float)$x); // Returns float 5.0
+echo "<br>";
+var_dump(floatval($x)); // Returns float 5.0
+echo "<br>";
+var_dump((int)(float)$x); // Returns int 5
+echo "<br>";
+$x = "5.5ee";
+var_dump((float) $x); // Returns float 5.5
+echo "<br>";
+$x = "adfjdf";
+var_dump((float) $x); // Returns float 0
 echo "<br>";
