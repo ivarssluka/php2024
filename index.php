@@ -1,87 +1,113 @@
 <?php
 
-/* Variable scope */
+/* Variable / Anonymous / Arrow functions */
 
-$x = 5; // Global variable
+function sum(int|float...$numbers): int|float
+{
+    return array_sum($numbers);
+}
+echo sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
+
+function sum2(int|float...$numbers): int|float
+{
+    return array_sum($numbers);
+}
+$x = 'sum2'; // Assign function name to a variable
+echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // Call the function this way
+
+/*
+function sub3(int|float...$numbers): int|float
+{
+    return array_sum($numbers);
+}
+$x = 'sum3';
+echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // PHP will look for the function 'sum3' and throw an error if not found*/
+
+function sub3(int|float...$numbers): int|float
+{
+    return array_sum($numbers);
+}
+$x = 'sum3';
+if (is_callable($x)) { // Check if the function is callable
+    echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
+} else {
+    echo 'Not callable' . '<br>';
+}
+
+// Lambda functions
+$z = 1;
+$sum = function (int|float ...$numbers): int|float // Because this is an expression we can assign it to variable
+{
+    echo $z . '<br>'; // You cannot access $z here because of scope
+    return array_sum($numbers);
+}; // For anonyous functions use semicolon ; at the end to avoid parse error
+echo $sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // And this will work
 
 
-include ('script.php'); // We will have the $x variable available in this file
+$sum2 = function(int|float ...$numbers) use ($z): int|float // But we can pass $z to the function after the use keyword
+{
+    $z = 12; // You can change $z here, but it will not be changed in the global scope as it is a copy of a global
+    echo $z . '<br>';
+    return array_sum($numbers);
+};
+echo $sum2(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
+echo $z . '<br>'; // This will print 1 // if you want to change global variable use the '&' operator to pass it by reference with use keyword
 
+// Callable type and callback functions
+
+$array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+$array2 = array_map(function($element) { // one way of calling a callback function
+    return $element * 2;
+}, $array);
+
+echo '<pre>';
+print_r($array);
+print_r($array2);
+echo '</pre>';
 echo '<br>';
-echo $x; // this will output 10 because we changed its value in script.php file.
-
-function test() {
-    echo $x . '<br>';
-}
-test(); // This will output an error because $x is not available in function test()
-
-function test2() {
-    $x = 1; // we can define variable inside the function
-    echo $x . '<br>';
-}
-test2(); // This will output 1
-
-function test3($x) { // or we can pass $x as a parameter
-    echo $x . '<br>';
-}
-test3($x); // and as an argument to access it
-
-function test4() {
-    global $x; // another way is to add a global keyword to tell function we are using global variable
-    echo $x . '<br>';
-}
-test4(); // The function will output 10
-
-function test5() {
-    global $x; // Because this is the reference to global variable
-    $x = 20; // We can change its value here
-    echo $x . '<br>';
-}
-test5(); // The function will output 20
-echo $x . '<br>'; // The global variable will output 20
 
 
-function test6()
-{
-    echo $GLOBALS['x'] . '<br>'; // We can access global variables in $GLOBALS array specifying their name
-    $GLOBALS['x'] = 30; // And we can change its value here
-    echo $GLOBALS['x'] . '<br>'; // This will output 30
-}
-test6(); // The function will output the new value of $x (30)
-// Not really recommended to use global variables.
+$x = function($element) { // another way of calling a callback function is to assign it to a variable
+    return $element * 2;
+};
+$array2 = array_map($x, $array); // And then passing the variable to the array_map function
 
-function getValue() {
-    $value = someVeryExpensiveFunction();
+echo '<pre>';
+print_r($array);
+print_r($array2);
+echo '</pre>';
+echo '<br>';
 
-    // some more pocessing with $value
 
-    return $value;
-}
+function multiply($element) { // another way of calling a callback function is to assign a name to it
+    return $element * 2;
+};
+$array2 = array_map('multiply', $array); // And then passing the name as a string to the array_map function
 
-function someVeryExpensiveFunction()
-{
-    sleep(2);
-    return 10;
-}
-//echo getValue() . '<br>'; // This will output 10 after 2 seconds
-//echo getValue() . '<br>'; // You will probably call this function many times
-//echo getValue() . '<br>'; // But it will take now 6 seconds to display all 3 values
+echo '<pre>';
+print_r($array);
+print_r($array2);
+echo '</pre>';
+echo '<br>';
 
-function getValue2()
-{
-    static $value2 = null; // Instead we can add static value here to cache the result
+// Arrow functions
 
-    if ($value2 === null) {
-        $value2 = someVeryExpensiveFunction();
-    }
-    return $value2;
-}
+$array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+$array2 = array_map(fn($element) => $element * 2, $array);  // Just looks cleaner and takes up less space
 
-function someVeryExpensiveFunction2()
-{
-    sleep(2);
-    return 10;
-}
-echo getValue2() . '<br>';
-echo getValue2() . '<br>';
-echo getValue2() . '<br>'; // Now this will only sleep for 2 seconds before returning all values.
+echo '<pre>';
+print_r($array);
+print_r($array2);
+echo '</pre>';
+echo '<br>';
+
+
+$xyz = 5;
+$array2 = array_map(fn($element) => $element * 2 * ++$xyz, $array); // You can add global variables without using the 'use' keyword
+
+echo '<pre>';
+print_r($array);
+print_r($array2);
+echo '</pre>';
+echo '<br>';
+echo $xyz . '<br>'; // You cannot modify $xyz in the parent scope from anonymous function
