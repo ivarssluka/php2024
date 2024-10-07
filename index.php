@@ -1,131 +1,87 @@
 <?php
 
-/* Functions 2 - parameters and arguments */
-declare(strict_types=1); // - this will cause an error for function
+/* Variable scope */
 
-/*
-function foo (int $a, int $b) { // Parameters // You can type hint parameters as well as return type
-    return $a + $b;
-}
+$x = 5; // Global variable
 
-echo foo('1', 2.5); // Arguments // this will throw an error since 8.3.9 version of php has deprecated float to int conversion
-// But it will output result anyway*/
 
-function foo (int|float $a, int|float $b)
-{
-    return $a + $b;
-}
+include ('script.php'); // We will have the $x variable available in this file
 
-echo foo(10, 2.5);
 echo '<br>';
+echo $x; // this will output 10 because we changed its value in script.php file.
 
-function bar (int|float $a, int|float $b = 5): int|float // if not passed as argument, you can define default value for the parameter
+function test() {
+    echo $x . '<br>';
+}
+test(); // This will output an error because $x is not available in function test()
+
+function test2() {
+    $x = 1; // we can define variable inside the function
+    echo $x . '<br>';
+}
+test2(); // This will output 1
+
+function test3($x) { // or we can pass $x as a parameter
+    echo $x . '<br>';
+}
+test3($x); // and as an argument to access it
+
+function test4() {
+    global $x; // another way is to add a global keyword to tell function we are using global variable
+    echo $x . '<br>';
+}
+test4(); // The function will output 10
+
+function test5() {
+    global $x; // Because this is the reference to global variable
+    $x = 20; // We can change its value here
+    echo $x . '<br>';
+}
+test5(); // The function will output 20
+echo $x . '<br>'; // The global variable will output 20
+
+
+function test6()
 {
-    return $a + $b;
+    echo $GLOBALS['x'] . '<br>'; // We can access global variables in $GLOBALS array specifying their name
+    $GLOBALS['x'] = 30; // And we can change its value here
+    echo $GLOBALS['x'] . '<br>'; // This will output 30
+}
+test6(); // The function will output the new value of $x (30)
+// Not really recommended to use global variables.
+
+function getValue() {
+    $value = someVeryExpensiveFunction();
+
+    // some more pocessing with $value
+
+    return $value;
 }
 
-echo bar(10);
-
-function add (int|float $a, int|float $b = 5, int $c): int|float // You cannot have required parameters after optional parameters '$c after $b'
+function someVeryExpensiveFunction()
 {
-    return $a + $b;
+    sleep(2);
+    return 10;
 }
+//echo getValue() . '<br>'; // This will output 10 after 2 seconds
+//echo getValue() . '<br>'; // You will probably call this function many times
+//echo getValue() . '<br>'; // But it will take now 6 seconds to display all 3 values
 
-echo add(10, 5, 2); // throws an error
-echo '<br>';
-
-function add2 (int|float $a, int|float $b = 5): int|float
+function getValue2()
 {
-    if ($a % 2 === 0) {
-        $a /= 2;
+    static $value2 = null; // Instead we can add static value here to cache the result
+
+    if ($value2 === null) {
+        $value2 = someVeryExpensiveFunction();
     }
-    return $a + $b;
+    return $value2;
 }
 
-$a = 6.0;
-$b = 7;
-
-echo add2($a, $b) . '<br>'; // Returns 10
-var_dump($a, $b); // Returns float(6), int(7);
-echo '<br>';
-
-function add3(int|float &$a, int|float $b = 5): int|float // if you add parameter by reference, it will be changed in the function (using & operator)
+function someVeryExpensiveFunction2()
 {
-    if ($a % 2 === 0) {
-        $a /= 2;
-    }
-    return $a + $b;
+    sleep(2);
+    return 10;
 }
-
-$a = 6.0;
-$b = 7;
-
-echo add3($a, $b) . '<br>'; // Returns 10
-var_dump($a, $b); // Returns float(3), int(7);
-echo '<br>';
-
-
-// Variadic function
-function add4(...$numbers): int|float // you can use splat operator to pass variable number of arguments
-{
-    $sum = 0;
-    foreach ($numbers as $number) { // now we can iterate through $numbers array to get outcome
-        $sum += $number;
-    }
-    return $sum;
-}
-$x = 6.0;
-$y = 7;
-echo add4($x, $y, 50, 10, 5) . '<br>'; // pass as many arguments as you want
-
-
-function add5(...$numbers): int|float
-{
-    return array_sum($numbers); // or use built-in function to relieve the task
-}
-
-echo add5(6.0, 7, 50, 10, 5) . '<br>';
-
-function add6(int|float $a, int|float $b, int|float ...$numbers): int|float // you can use splat operator after required parameters and assign a type
-{
-    return $a + $b + array_sum($numbers);
-}
-
-$x = 10;
-$y = 11;
-//echo add6($x, $y, '50', 10, 5) . '<br>'; // will throw an error because '50' is not a number
-echo add6($x, $y, 50, 10, 5) . '<br>';
-
-function add7(int|float $a, int|float $b, int|float ...$numbers): int|float // you can use splat operator after required parameters and assign a type
-{
-    return $a + $b + array_sum($numbers);
-}
-
-$x = 10;
-$y = 11;
-$numbers = [50, 10, 5];
-//echo add7($x, $y, $numbers) . '<br>'; // you cannot just pass an array like that because $numbers isn't integer or float
-echo add7($x, $y, ...$numbers) . '<br>'; // split array in separate arguments using ( ... ) operator
-
-function named(int $x, int $y): int
-{
-    if ($x % $y == 0) {
-        return $x / $y;
-    }
-    return $x;
-}
-
-$x = 6;
-$y = 3;
-echo named($x, $y) . '<br>'; // Returns 2
-echo named($y, $x) . '<br>'; // Returns 3 as $y is passed as $x // You should pass arguments in the same order as you pass parameters
-echo named(y: $y, x: $x) . '<br>'; // Since PHP 8 you can name arguments and this will resolve the problem
-//echo named(x: $y, x: $x) . '<br>'; // This will return an error, you cannot have multiple arguments with the same name
-echo named($x, y: $y) . '<br>'; // works fine
-//echo named($y, x: $x) . '<br>'; // error
-
-// Naming arguments can become useful in some cases
-//setcookie('foo', 'bar', 0, '', '', false, true); // If you want to change httpOnly to true you need to fill all the parameters
-//setcookie(name: 'foo', value: 'bar', httponly: true); // in this case it relieves the task
-
-
+echo getValue2() . '<br>';
+echo getValue2() . '<br>';
+echo getValue2() . '<br>'; // Now this will only sleep for 2 seconds before returning all values.
