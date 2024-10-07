@@ -1,138 +1,131 @@
 <?php
 
-/* Functions */
+/* Functions 2 - parameters and arguments */
+declare(strict_types=1); // - this will cause an error for function
 
-function foo()
-{
-    echo "Hello, World! <br>";
+/*
+function foo (int $a, int $b) { // Parameters // You can type hint parameters as well as return type
+    return $a + $b;
 }
 
-foo(); // Call the function to execute
+echo foo('1', 2.5); // Arguments // this will throw an error since 8.3.9 version of php has deprecated float to int conversion
+// But it will output result anyway*/
 
-function bar()
+function foo (int|float $a, int|float $b)
 {
-    return "Hello, World! <br>"; // Return a string but not displaying it
+    return $a + $b;
 }
 
-echo bar(); // Output: Hello, World!
-$greeting = bar();
-echo $greeting . '<br>'; // Output: Hello, World!
-
-function test()
-{
-    return; // Returns null
-}
-
-var_dump(test()); // Output: null
+echo foo(10, 2.5);
 echo '<br>';
 
-var_dump(test2());   // Output: Hellooo // You can define a function after it has been called
-echo '<br>';
-function test2()
+function bar (int|float $a, int|float $b = 5): int|float // if not passed as argument, you can define default value for the parameter
 {
-    return 'Hellooo';
+    return $a + $b;
 }
 
-/*var_dump(test3());   // Exception is if we use a function with conditional statements // Call to undefined function error
+echo bar(10);
+
+function add (int|float $a, int|float $b = 5, int $c): int|float // You cannot have required parameters after optional parameters '$c after $b'
+{
+    return $a + $b;
+}
+
+echo add(10, 5, 2); // throws an error
 echo '<br>';
-if (false) {
-    function test3()
-    {
-        return 'Hellooo';
+
+function add2 (int|float $a, int|float $b = 5): int|float
+{
+    if ($a % 2 === 0) {
+        $a /= 2;
     }
-}*/
+    return $a + $b;
+}
 
-/*var_dump(test4());   // Even if we set it to true it still returns error, because it needs to run before it can be called
+$a = 6.0;
+$b = 7;
+
+echo add2($a, $b) . '<br>'; // Returns 10
+var_dump($a, $b); // Returns float(6), int(7);
 echo '<br>';
-if (true) {
-    function test4()
-    {
-        return 'Hellooo';
+
+function add3(int|float &$a, int|float $b = 5): int|float // if you add parameter by reference, it will be changed in the function (using & operator)
+{
+    if ($a % 2 === 0) {
+        $a /= 2;
     }
-}*/
+    return $a + $b;
+}
 
+$a = 6.0;
+$b = 7;
+
+echo add3($a, $b) . '<br>'; // Returns 10
+var_dump($a, $b); // Returns float(3), int(7);
 echo '<br>';
-if (true) {
-    function test4()
-    {
-        return 'Hellooo';
+
+
+// Variadic function
+function add4(...$numbers): int|float // you can use splat operator to pass variable number of arguments
+{
+    $sum = 0;
+    foreach ($numbers as $number) { // now we can iterate through $numbers array to get outcome
+        $sum += $number;
     }
+    return $sum;
 }
-var_dump(test4());  // Now it runs
-echo '<br>';
+$x = 6.0;
+$y = 7;
+echo add4($x, $y, 50, 10, 5) . '<br>'; // pass as many arguments as you want
 
-test5(); // Output: Hellooo, but function inside of it doesn't run
-hello(); // if we call it separately, then it runs, but you need to run it in order to prevent errors
-function test5()
+
+function add5(...$numbers): int|float
 {
-    echo 'Hellooo' . '<br>';
-    function hello()
-    {
-        echo 'test 5' . '<br>';
+    return array_sum($numbers); // or use built-in function to relieve the task
+}
+
+echo add5(6.0, 7, 50, 10, 5) . '<br>';
+
+function add6(int|float $a, int|float $b, int|float ...$numbers): int|float // you can use splat operator after required parameters and assign a type
+{
+    return $a + $b + array_sum($numbers);
+}
+
+$x = 10;
+$y = 11;
+//echo add6($x, $y, '50', 10, 5) . '<br>'; // will throw an error because '50' is not a number
+echo add6($x, $y, 50, 10, 5) . '<br>';
+
+function add7(int|float $a, int|float $b, int|float ...$numbers): int|float // you can use splat operator after required parameters and assign a type
+{
+    return $a + $b + array_sum($numbers);
+}
+
+$x = 10;
+$y = 11;
+$numbers = [50, 10, 5];
+//echo add7($x, $y, $numbers) . '<br>'; // you cannot just pass an array like that because $numbers isn't integer or float
+echo add7($x, $y, ...$numbers) . '<br>'; // split array in separate arguments using ( ... ) operator
+
+function named(int $x, int $y): int
+{
+    if ($x % $y == 0) {
+        return $x / $y;
     }
+    return $x;
 }
 
+$x = 6;
+$y = 3;
+echo named($x, $y) . '<br>'; // Returns 2
+echo named($y, $x) . '<br>'; // Returns 3 as $y is passed as $x // You should pass arguments in the same order as you pass parameters
+echo named(y: $y, x: $x) . '<br>'; // Since PHP 8 you can name arguments and this will resolve the problem
+//echo named(x: $y, x: $x) . '<br>'; // This will return an error, you cannot have multiple arguments with the same name
+echo named($x, y: $y) . '<br>'; // works fine
+//echo named($y, x: $x) . '<br>'; // error
 
-name(); // Output: test 6 without error
-//test6(); // will output: name with error for the function with the same name
+// Naming arguments can become useful in some cases
+//setcookie('foo', 'bar', 0, '', '', false, true); // If you want to change httpOnly to true you need to fill all the parameters
+//setcookie(name: 'foo', value: 'bar', httponly: true); // in this case it relieves the task
 
-function name()
-{
-    echo 'test 6' . '<br>';
-    function test6()
-    {
-        echo 'name' . '<br>';
 
-        function name()
-        {
-            echo 'test 7' . '<br>';
-        }
-    }
-}
-
-// If we want to avoid next, we have to declare strict types
-function type(): int
-{ // we can hint the return types to functions
-    return '1';
-//    return []; // Will throw an error because array cannot be converted to int
-}
-
-var_dump(type()); // still returns int(1)
-echo '<br>';
-
-function test8(): void // hint void if you are not expecting specific return
-{
-    return;
-}
-
-var_dump(test8()); // Output: null
-echo '<br>';
-
-function test9(): ?int // ? - stands for nullable type so it can return either integer or null
-{
-//    return null; // without ? this will throw an error
-    return 1;
-}
-
-var_dump(test9()); // Output: null
-echo '<br>';
-
-function test10(): int|float|array // | - means that the function can return either int or float or array
-{
-//    return 1;
-//    return [1, 2, 3];
-    return 0.1;
-}
-
-var_dump(test10()); // will output int or float depending on what we return
-echo '<br>';
-
-function test11(): mixed // mixed - can return any type. You cannot use ? with mixed because it already includes null
-{
-//    return 1;
-//    return [1, 2, 3];
-//    return 0.1;
-    return 'test';
-}
-var_dump(test11());
-echo '<br>';
