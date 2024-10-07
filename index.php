@@ -1,113 +1,32 @@
 <?php
 
-/* Variable / Anonymous / Arrow functions */
+/* Date and Time */
 
-function sum(int|float...$numbers): int|float
-{
-    return array_sum($numbers);
-}
-echo sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
+echo time() . '<br>'; // unix timestamp in seconds from (1970-01-01 00:00:00 UTC)
 
-function sum2(int|float...$numbers): int|float
-{
-    return array_sum($numbers);
-}
-$x = 'sum2'; // Assign function name to a variable
-echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // Call the function this way
+$currentTime = time();
+echo $currentTime . '<br>';
+echo $currentTime + 5 * 24 * 60 * 60 . '<br>'; // Adding 5 days in seconds
+echo $currentTime - 60 * 60 * 24 . '<br>'; // Subtracting 1 day in seconds
 
-/*
-function sub3(int|float...$numbers): int|float
-{
-    return array_sum($numbers);
-}
-$x = 'sum3';
-echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // PHP will look for the function 'sum3' and throw an error if not found*/
+echo date('Y-m-d H:i:s') . '<br>'; // Date and time in YYYY-MM-DD HH:MM:SS
+echo date('l jS \of F Y h:i:s A') . '<br>'; // Day, date, month, year, time
+echo date('m/d/Y g:ia') . '<br>'; // Month, date, year, time
+echo date('l jS \of F Y h:i:s A', $currentTime + 5 * 24 * 60 * 60) . '<br>'; // Formatted date and time five days in the future
 
-function sub3(int|float...$numbers): int|float
-{
-    return array_sum($numbers);
-}
-$x = 'sum3';
-if (is_callable($x)) { // Check if the function is callable
-    echo $x(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
-} else {
-    echo 'Not callable' . '<br>';
-}
+// By default date() and time() are in GMT time zone defined in PHP configuration file
+echo date_default_timezone_get() . '<br>';
+date_default_timezone_set('Europe/Riga');
+echo date('l jS \of F Y h:i:s A') . '<br>'; // Day, date, month, year, time
+echo date_default_timezone_get() . '<br>';
 
-// Lambda functions
-$z = 1;
-$sum = function (int|float ...$numbers): int|float // Because this is an expression we can assign it to variable
-{
-    echo $z . '<br>'; // You cannot access $z here because of scope
-    return array_sum($numbers);
-}; // For anonyous functions use semicolon ; at the end to avoid parse error
-echo $sum(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>'; // And this will work
+echo strtotime('2024-10-07 16:00:00') . '<br>'; // Unix timestamp in seconds
+echo date('Y-m-d H:i:s', strtotime('2024-10-07 16:00:00')) . '<br>'; // You can format that as well
+echo date('Y-m-d H:i:s', strtotime('+5 days')) . '<br>'; // You can pass in the relative formats like this
+echo date('Y-m-d H:i:s', strtotime('tomorrow')) . '<br>'; // You can pass in the relative formats like this
+echo date('Y-m-d H:i:s', strtotime('second friday of this month')) . '<br>'; // You can pass in the relative formats like this
 
-
-$sum2 = function(int|float ...$numbers) use ($z): int|float // But we can pass $z to the function after the use keyword
-{
-    $z = 12; // You can change $z here, but it will not be changed in the global scope as it is a copy of a global
-    echo $z . '<br>';
-    return array_sum($numbers);
-};
-echo $sum2(1, 2, 3, 4, 5, 6, 7, 8, 9, 10) . '<br>';
-echo $z . '<br>'; // This will print 1 // if you want to change global variable use the '&' operator to pass it by reference with use keyword
-
-// Callable type and callback functions
-
-$array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-$array2 = array_map(function($element) { // one way of calling a callback function
-    return $element * 2;
-}, $array);
-
+$date = date('Y-m-d H:i:s', strtotime('last day of this month'));
 echo '<pre>';
-print_r($array);
-print_r($array2);
+print_r(date_parse($date)); // get array of details about the date and time
 echo '</pre>';
-echo '<br>';
-
-
-$x = function($element) { // another way of calling a callback function is to assign it to a variable
-    return $element * 2;
-};
-$array2 = array_map($x, $array); // And then passing the variable to the array_map function
-
-echo '<pre>';
-print_r($array);
-print_r($array2);
-echo '</pre>';
-echo '<br>';
-
-
-function multiply($element) { // another way of calling a callback function is to assign a name to it
-    return $element * 2;
-};
-$array2 = array_map('multiply', $array); // And then passing the name as a string to the array_map function
-
-echo '<pre>';
-print_r($array);
-print_r($array2);
-echo '</pre>';
-echo '<br>';
-
-// Arrow functions
-
-$array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-$array2 = array_map(fn($element) => $element * 2, $array);  // Just looks cleaner and takes up less space
-
-echo '<pre>';
-print_r($array);
-print_r($array2);
-echo '</pre>';
-echo '<br>';
-
-
-$xyz = 5;
-$array2 = array_map(fn($element) => $element * 2 * ++$xyz, $array); // You can add global variables without using the 'use' keyword
-
-echo '<pre>';
-print_r($array);
-print_r($array2);
-echo '</pre>';
-echo '<br>';
-echo $xyz . '<br>'; // You cannot modify $xyz in the parent scope from anonymous function
